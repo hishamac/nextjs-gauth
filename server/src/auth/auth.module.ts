@@ -35,6 +35,7 @@ import * as bcrypt from 'bcrypt';
                   })
                 return schema;
               },
+              
             },
           ]),
         AuthModule
