@@ -5,6 +5,7 @@ import { User, UserSchema } from './user.schema';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -38,6 +39,9 @@ import * as bcrypt from 'bcrypt';
 
       },
     ]),
+    JwtModule.register({
+      secret:process.env.JWT_SECRET
+    }),
     AuthModule
   ],
   controllers: [AuthController],
