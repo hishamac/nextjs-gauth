@@ -37,10 +37,10 @@ export class AuthController {
             let user = await this.userModel.findOne({ email })
             if (!user) {
                 password ? user = new this.userModel({ name, email, image, password })
-                : user = new this.userModel({ name, email, image, password: gPassword })
+                    : user = new this.userModel({ name, email, image, password: gPassword })
                 user = await new this.userModel({ name, email, image, password: gPassword })
                 user.save()
-                const payload = {_id:user._id}
+                const payload = { _id: user._id }
                 const token = this.jwtService.sign(payload)
                 return token
             }

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import '../styles/globals.css'
 export const metadata = {
   title: 'Next.js',
@@ -11,6 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+      <script src="https://accounts.google.com/gsi/client"></script>
+      </head>
       <body>{children}</body>
     </html>
   )
