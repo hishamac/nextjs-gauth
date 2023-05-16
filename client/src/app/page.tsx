@@ -14,7 +14,7 @@ export default function Page() {
       const decodedCredentials:Credentials = jwtDecode(res.credential as string)
       console.log(decodedCredentials);
       const name = decodedCredentials.family_name+' '+decodedCredentials.given_name
-      axios.post('/auth/login',{name,email:decodedCredentials.email,image:decodedCredentials.picture})
+      axios.post('http://localhost:5000/auth/login',{name,email:decodedCredentials.email,image:decodedCredentials.picture})
     }else{
       console.log('error');
     }
