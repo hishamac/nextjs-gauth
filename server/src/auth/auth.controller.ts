@@ -5,6 +5,7 @@ import { User, UserDocument } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
+import { Response, Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +22,7 @@ export class AuthController {
     }
 
     @Post('login')
-    async login(@Body() body) {
+    async login(@Body() body, @Req() request: Request, @Res({ passthrough: true }) response: Response) {
         try {
             const { name, email, image, password } = body
             const generatePassword = (length: number) => {
@@ -38,15 +39,15 @@ export class AuthController {
             if (!user) {
                 password ? user = new this.userModel({ name, email, image, password })
                     : user = new this.userModel({ name, email, image, password: gPassword })
-                user = await new this.userModel({ name, email, image, password: gPassword })
                 user.save()
                 const payload = { _id: user._id }
                 const token = this.jwtService.sign(payload)
-                return token
+                response.cookie('token', `${token}`)
             }
-            const token = this.jwtService.sign(generatePassword(10))
-            return token
-
+            const payload = { _id: user._id }
+            const token = this.jwtService.sign(payload)
+            response.cookie('token', `${token}`)
+            return request.cookies.token
         } catch (err) {
             return err
         }
