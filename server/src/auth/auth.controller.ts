@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
+import jwtDecode from 'jwt-decode'
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +17,7 @@ export class AuthController {
     ) { }
 
 
-    @Get()
+    @Get('/')
     getHello(): string {
         return this.appService.getHello();
     }
@@ -52,34 +53,15 @@ export class AuthController {
             return err
         }
     }
-    // @Post('/login')
-    // async googleLogin(@Body() body: any, @Res() res: any): Promise<any> {
-    //     try {
-    //         const { name, email, image, password } = body
-    //         const generatePassword = (length: number) => {
-    //             let result = '';
-    //             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    //             const charactersLength = characters.length;
-    //             for (let i = 0; i < length; i++) {
-    //                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    //             }
-    //             return result;
-    //         }
-
-    //         const gPassword = generatePassword(10)
-    //         // const gPassword = process.env.PASSWORD
-
-    //         let user = await this.userModel.findOne({ email })
-    //         if (!user) {
-    //             // password ? user = new this.userModel({ name, email, image, password })
-    //             // : user = new this.userModel({ name, email, image, password: gPassword })
-    //             user = await new this.userModel({ name, email, image, password: 'gPassword' })
-    //             // user.save()
-    //             return user.save()
-    //         }
-    //         return 'already'
-    //     } catch (err) {
-    //         return err
-    //     }
-    // }
+    @Get('/getLoginUser')
+    async getLoginUser(@Req() request: Request) {
+        const token = request.cookies.token
+        if (token) {
+            const decodedToken:any = jwtDecode(token)
+            const userId = decodedToken._id
+            const loggedInUser = await this.userModel.find({_id:userId})
+            return loggedInUser
+        }
+        return 'No Logined User'
+    }
 }
