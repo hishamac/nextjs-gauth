@@ -41,11 +41,11 @@ export class AuthController {
                 password ? user = new this.userModel({ name, email, image, password })
                     : user = new this.userModel({ name, email, image, password: gPassword })
                 user.save()
-                const payload = { _id: user._id }
+                const payload = { _id: user._id,user }
                 const token = this.jwtService.sign(payload)
                 response.cookie('token', `${token}`)
             }
-            const payload = { _id: user._id }
+            const payload = { _id: user._id,user }
             const token = this.jwtService.sign(payload)
             response.cookie('token', `${token}`)
             return request.cookies.token
@@ -59,7 +59,7 @@ export class AuthController {
         if (token) {
             const decodedToken:any = jwtDecode(token)
             const userId = decodedToken._id
-            const loggedInUser = await this.userModel.find({_id:userId})
+            const loggedInUser = await this.userModel.findById(userId)
             return loggedInUser
         }
         return 'No Logined User'
