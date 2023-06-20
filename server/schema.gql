@@ -1,0 +1,45 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CatType {
+  _id: String!
+  breed: String!
+  characteristics: String!
+  owner: JSONObject!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type OwnerType {
+  _id: String!
+  name: String!
+  cats: [JSONObject!]!
+}
+
+type Query {
+  cats: [CatType!]!
+  owners: [OwnerType!]!
+}
+
+type Mutation {
+  createCat(input: CatInputType!): CatType!
+  updateCat(id: String!, input: CatInputType!): CatType!
+  deleteCat(id: String!): CatType!
+  createOwner(input: OwnerInputType!): OwnerType!
+  updateOwner(id: String!, input: OwnerInputType!): OwnerType!
+  deleteOwner(id: String!): OwnerType!
+}
+
+input CatInputType {
+  breed: String!
+  characteristics: String!
+  owner: String!
+}
+
+input OwnerInputType {
+  name: String!
+}

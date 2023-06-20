@@ -6,6 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { CatModule } from './cat/cat.module';
+import { OwnerModule } from './owner/owner.module';
 
 @Module({
   imports: [
@@ -15,7 +17,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql'
     }),
-    AuthModule
+    AuthModule,
+    CatModule,
+    OwnerModule
   ],
   controllers: [AppController],
   providers: [AppService],
